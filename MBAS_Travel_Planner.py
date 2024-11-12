@@ -1,6 +1,6 @@
 """ INST326 Final Project
     
-    Madison Hueston, Samgwaa Lesiga, Brooke Davis, Areana
+    Madison Hueston, Samgwaa Lesiga, Brooke Davis, Areana Holder
 
     A travel package planner.
 """
