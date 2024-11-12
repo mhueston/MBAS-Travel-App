@@ -5,6 +5,7 @@
     A travel package planner.
 """
 import requests
+import location_database
 
 class Travel_Planner:
     """A class that generates a custom travel package based on user input.
@@ -42,7 +43,9 @@ class Travel_Planner:
         pass
     
     def retreive_event_data(self):
-        pass
+        
+        events = location_database()
+        events.search_activities()
     
     def create_travel_package(self):
         pass
