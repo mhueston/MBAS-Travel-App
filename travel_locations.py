@@ -41,7 +41,7 @@ def scrape_places_to_visit(url):
 
     return travel_data
 
-# Example usage
+
 if __name__ == "__main__":
     url = "https://www.travelandleisure.com/best-places-to-visit-in-south-america-7974457"
     travel_data = scrape_places_to_visit(url)
