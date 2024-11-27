@@ -8,7 +8,7 @@ import requests
 import travel_locations
 import flight_database
 
-class Travel_Planner:
+class TravelPlanner:
     """A class that generates a custom travel package based on user input.
 
     Attributes:
@@ -103,7 +103,7 @@ class Travel_Planner:
     
 if __name__ == "__main__":
     
-    planner = Travel_Planner() 
+    planner = TravelPlanner() 
     
     planner.get_user_input() 
     
