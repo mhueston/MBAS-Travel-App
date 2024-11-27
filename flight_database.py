@@ -19,9 +19,9 @@ class FlightDatabase:
             arrival_id (str): The arrival airport code.
             outbound_date (str): The date of departure in 'YYYY-MM-DD' format.
         """
-        self.departure_id = "JFK"
-        self.arrival_id = "MEX"
-        self.outbound_date = "2025-06-21"
+        self.departure_id = departure_id
+        self.arrival_id = arrival_id
+        self.outbound_date = outbound_date
 
     def get_flight_results(self):
         """
@@ -43,8 +43,8 @@ class FlightDatabase:
 
         response = requests.get(api_endpoint, params=params)
         
-        if response.status_code != 200:
-            print("Error fetching flight data.")
+        if response.status_code != 200: 
+            print(f"Error fetching flight data. Status code: {response.status_code}") 
             return []
 
         data = response.json()
