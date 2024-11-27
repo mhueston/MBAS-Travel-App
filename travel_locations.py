@@ -42,12 +42,12 @@ def scrape_places_to_visit(url, country_name):
     return places_in_country
 
 
-if __name__ == "__main__":
-    url = "https://www.travelandleisure.com/best-places-to-visit-in-south-america-7974457"
-    country_name = "Colombia" # Specify the country you want to filter by
-    places = scrape_places_to_visit(url, country_name)
+#if __name__ == "__main__":
+#    url = "https://www.travelandleisure.com/best-places-to-visit-in-south-america-7974457"
+#    country_name = "Colombia" # Specify the country you want to filter by
+#    places = scrape_places_to_visit(url, country_name)
 
     # Print the scraped data
-    print(f"Places to Visit in {country_name}:")
-    for place in places:
-        print(f"  - {place}")
+#    print(f"Places to Visit in {country_name}:")
+#    for place in places:
+#        print(f"  - {place}")
