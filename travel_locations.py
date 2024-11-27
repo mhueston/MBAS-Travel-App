@@ -1,15 +1,16 @@
 import requests
 from bs4 import BeautifulSoup
 
-def scrape_places_to_visit(url):
+def scrape_places_to_visit(url, country_name):
     """
-    Scrapes the names of South American countries and the places to visit from the given URL.
+    Scrapes the places to visit in the specified country from the given URL.
     
     Args:
         url: The URL of the webpage to scrape.
+        country_name: The name of the country to filter results for.
     
     Returns:
-        A dictionary where keys are country names and values are lists of places to visit.
+        A list of places to visit in the specified country.
     """
     response = requests.get(url)
     if response.status_code != 200:
@@ -19,8 +20,8 @@ def scrape_places_to_visit(url):
     # Parse the HTML content
     soup = BeautifulSoup(response.content, 'html.parser')
 
-    # Dictionary to store countries and their places
-    travel_data = {}
+    # List to store places in the specified country
+    places_in_country = []
 
     # Find all span elements with the class "mntl-sc-block-heading__text"
     headings = soup.find_all('span', class_='mntl-sc-block-heading__text')
@@ -34,20 +35,19 @@ def scrape_places_to_visit(url):
             place = parts[0].strip()  # Extract the place name
             country = parts[-1].strip()  # Extract the country name
             
-            # Add the place to the corresponding country in the dictionary
-            if country not in travel_data:
-                travel_data[country] = []
-            travel_data[country].append(place)
+            # If the country matches the given parameter, add the place to the list
+            if country.lower() ==  country_name.lower():
+                places_in_country.append(place)
 
-    return travel_data
+    return places_in_country
 
 
 if __name__ == "__main__":
     url = "https://www.travelandleisure.com/best-places-to-visit-in-south-america-7974457"
-    travel_data = scrape_places_to_visit(url)
+    country_name = "Colombia" # Specify the country you want to filter by
+    places = scrape_places_to_visit(url, country_name)
 
     # Print the scraped data
-    for country, places in travel_data.items():
-        print(f"{country}:")
-        for place in places:
-            print(f"  - {place}")
+    print(f"Places to Visit in {country_name}:")
+    for place in places:
+        print(f"  - {place}")
