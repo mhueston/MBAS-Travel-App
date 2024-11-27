@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from MBAS_Travel_Planner import Travel_Planner  # Adjust the import path as needed
+from MBAS_Travel_Planner import Travel_Planner 
 
 class TestTravelPlanner(unittest.TestCase):
     
@@ -30,7 +30,6 @@ class TestTravelPlanner(unittest.TestCase):
         expected_output = "Mock Flight Data-----------------------------------Mock Flight Data"
         self.assertEqual(self.planner.flight_results, expected_output)
 
-        # Verify the database class is called with correct parameters
         MockFlightDatabase.assert_called_with("JFK", "LAX", "2024-12-01")
 
     @patch("location_database")
@@ -42,7 +41,6 @@ class TestTravelPlanner(unittest.TestCase):
 
         self.planner.retreive_event_data()
 
-        # Verify the database method was called
         mock_event_instance.search_activities.assert_called_once()
 
     @patch("builtins.print")
