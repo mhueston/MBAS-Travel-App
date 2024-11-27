@@ -6,6 +6,7 @@
 """
 import requests
 import location_database
+import flight_database
 
 class Travel_Planner:
     """A class that generates a custom travel package based on user input.
@@ -15,10 +16,22 @@ class Travel_Planner:
     """
     
     def __init__(self):
-        pass
+        self.origin = "" 
+        self.destination = ""
+        self.start_date = ""
+        self.end_date = ""
+        self.flight_price_max = 0
+        self.hotel_price_max = 0
+        self.flight_results = ""
     
     def get_user_input(self):
-        pass 
+        
+        self.origin = input("Enter the origin airport code (e.g., JFK): ") 
+        self.destination = input("Enter the destination airport code (e.g., LAX): ") 
+        self.start_date = input("Enter the start date of the trip (YYYY-MM-DD): ") 
+        self.end_date = input("Enter the end date of the trip (YYYY-MM-DD): ") 
+        self.flight_price_max = float(input("Enter the maximum flight price: ")) 
+        self.hotel_price_max = float(input("Enter the maximum hotel price per night: ")) 
     
     def retreive_flight_data(self, origin, destination, start_date, end_date, flight_price_max):
         """ Take destiniation origin, date range, and flight price range to find a flight that fits the criteria. Driven by Madison
@@ -34,7 +47,14 @@ class Travel_Planner:
             reccomended_flight (String): The flight the user should take
         
         """
-        pass
+        
+        outbound_flight = flight_database.FlightDatabase(origin, destination, start_date)
+        inbound_flight = flight_database.FlightDatabase(origin, destination, start_date)
+        
+        self.flight_results += outbound_flight.get_flight_results()
+        self.flight_results += "-----------------------------------"
+        self.flight_results += inbound_flight.get_flight_results()
+        
     
     def retreive_hotel_data(self):
         pass
@@ -60,7 +80,7 @@ class Travel_Planner:
             travel_package_output (String): A string format of the travel package.
         
         """
-        pass
+        print (f'Here is your flight information:\n{self.flight_results}')
     
     
 if __name__ == "__main__":

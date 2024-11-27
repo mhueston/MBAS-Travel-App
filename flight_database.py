@@ -10,7 +10,7 @@ class FlightDatabase:
         outbound_date (str): The date of departure in 'YYYY-MM-DD' format.
     """
 
-    def __init__(self, departure_id, arrival_id, outbound_date, api_key):
+    def __init__(self, departure_id, arrival_id, outbound_date):
         """
         Initializes the FlightDatabase with user-provided details.
 
@@ -19,9 +19,9 @@ class FlightDatabase:
             arrival_id (str): The arrival airport code.
             outbound_date (str): The date of departure in 'YYYY-MM-DD' format.
         """
-        self.departure_id = departure_id
-        self.arrival_id = arrival_id
-        self.outbound_date = outbound_date
+        self.departure_id = "JFK"
+        self.arrival_id = "MEX"
+        self.outbound_date = "2025-06-21"
 
     def get_flight_results(self):
         """
