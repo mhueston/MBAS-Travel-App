@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from MBAS_Travel_Planner import Travel_Planner 
+from MBAS_Travel_Planner import Travel_Planner
 
 class TestTravelPlanner(unittest.TestCase):
     
