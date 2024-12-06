@@ -5,7 +5,6 @@
     A travel package planner.
 """
 import requests
-import re
 import travel_locations 
 import flight_database 
 import hotel_databases
@@ -26,7 +25,6 @@ class Travel_Planner:
         self.flight_price_max = 0
         self.hotel_price_max = 0
         self.flight_results = ""
-        self.country_name = ""
     
     def get_user_input(self):
         
@@ -141,3 +139,13 @@ if __name__ == "__main__":
     
     # prints the date from the retrieve_weather_data function
     print(planner.retreive_weather_data())
+
+    planner.retreive_hotel_data()
+
+    planner.retreive_event_data()
+
+    planner.create_travel_package()
+
+    planner.display_travel_package()
+
+    
