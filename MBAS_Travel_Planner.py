@@ -102,7 +102,7 @@ class Travel_Planner:
         
         month_name = months[month_number - 1]
 
-        # Retrieve weather information
+        # Retrieve weather information from weather_database
         
         seasons_checker = weather_database.SouthAmericaSeasons()
         
@@ -146,6 +146,5 @@ if __name__ == "__main__":
 
     planner.create_travel_package()
 
-    planner.display_travel_package()
 
     
