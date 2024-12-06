@@ -5,9 +5,11 @@
     A travel package planner.
 """
 import requests
+import re
 import travel_locations 
 import flight_database 
 import hotel_databases
+import weather_database
 
 class Travel_Planner:
     """A class that generates a custom travel package based on user input.
@@ -24,7 +26,11 @@ class Travel_Planner:
         self.flight_price_max = 0
         self.hotel_price_max = 0
         self.flight_results = ""
+<<<<<<< Updated upstream
         self.country_name = ""
+=======
+        
+>>>>>>> Stashed changes
     
     def get_user_input(self):
         
@@ -65,7 +71,31 @@ class Travel_Planner:
     
 
     def retreive_weather_data(self):
-        pass
+            
+        try: 
+            # Parse the date and extract the month
+            year, month, day = self.start_date.split("-")
+            month_number = int(month)
+
+            # Convert month number to name
+            months = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ]
+            if not 1 <= month_number <= 12:
+                raise ValueError("Invalid month number. Must be between 1 and 12.")
+            
+            month_name = months[month_number - 1]
+
+            # Retrieve weather information
+            seasons_checker = weather_database.SouthAmericaSeasons()
+            message = seasons_checker.get_season(country, month_name)
+            return message
+        except ValueError as e:
+            return str(e)
+        except Exception:
+            return "An error occurred while processing the weather data."
+        
     
     def retreive_event_data(self):
         
