@@ -1,81 +1,51 @@
 import requests
-#print hotels based on price, put in link
 
 
-def get_hotels(city, rating, check_in, check_out, adults, price): 
-        api_url = "https://hotels.com/v1/search" #placeholder
-        api_key = "api key here"  #placeholder
-        parameters = {
-            "City": city,
-            "Rating": rating,
-            "Check_in": check_in,
-            "Check_out": check_out,
-            "Adults": adults,
-            "Price": price,
-            "api_key": api_key
-        }
-        response = requests.get(api_url, parameters)
+def get_hotels(city, rating, check_in, check_out, price): 
+        api_key = "5330664078a7d7f3e969ffaa48d3865c5ca16390f5e8441f4d4382c0b13a0866"
+        geocode_url = "https://maps.googleapis.com/maps/api/geocode/json"
+        geocode_params = {
+        "address": city,
+        "key": api_key
+    }
+        geocode_response = requests.get(geocode_url, params=geocode_params).json()
+
+        if geocode_response.get("status") == "OK":
+            location = geocode_response["results"][0]["geometry"]["location"]
+            lat, lng = location["lat"], location["lng"]
+        else:
+            print("Error: Unable to determine the coordinates of the specified city.")
+            return []
+
+        places_url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
+        places_params = {
+        "location": f"{lat},{lng}",
+        "radius": 50000,  # 50 km radius
+        "type": "lodging",
+        "key": api_key
+    }
+        response = requests.get(places_url, params = places_params)        
         if response.status_code == 200:
             hotels = response.json().get("results", [])
-            return [hotel for hotel in hotels if hotel.get('rating', 0) >= rating]
+            filter_hotels = [
+                {
+                    "Name": hotel["Name"],
+                    "Rating": hotel.get("Rating", "N/A"),
+                    "Price": hotel.get("Price_Level", "N/A"),
+                    "City": hotel.get("City", "N/A"),
+                    "Check-In": check_in,
+                    "Check-Out": check_out
+
+                }
+                for hotel in hotels if hotel.get("Rating", 0) >= rating
+            ]
+            return filter_hotels
         else:
             print(f"Error: Unable to get data (Status Code: {response.status_code})")
-        return []
+            return []
 
-
-    #def __init__(self, db_name="hotels.db"):
-        """
-        Initializes the database connection and creates the necessary tables 
-        if they don't already exist.
-        
-        Args:
-            db_name (str): The name of the database file.
-        """
-        self.connection = sqlite3.connect(db_name)
-        self.create_tables()
-
-    #def create_tables(self):
-        """
-        Creates tables for hotels and bookings if they do not already exist.
-        The hotels table stores hotel details, and the bookings table stores 
-        booking information for each hotel.
-        """
-        cursor = self.connection.cursor()
-        
-        # Create hotels table
-        cursor.execute('''CREATE TABLE IF NOT EXISTS hotels (
-                            id INTEGER PRIMARY KEY,
-                            name TEXT NOT NULL,
-                            location TEXT,
-                            rating REAL,
-                            price_per_night REAL
-                          )''')
-        
-        # Create bookings table
-        cursor.execute('''CREATE TABLE IF NOT EXISTS bookings (
-                            id INTEGER PRIMARY KEY,
-                            hotel_id INTEGER,
-                            customer_name TEXT,
-                            check_in_date TEXT,
-                            check_out_date TEXT,
-                            FOREIGN KEY (hotel_id) REFERENCES hotels (id)
-                          )''')
-        
-        self.connection.commit()
 
 def display_hotel(hotels):
-        """
-        Adds a new hotel to the database.
-        
-        Args:
-            name (str): The name of the hotel.
-            location (str): The location of the hotel.
-            rating (float): The hotel's rating.
-            price_per_night (float): Price per night at the hotel.
-        
-        Returns:
-            int: The ID of the newly added hotel.
-        """
         if hotels:
             print("\nAvailable Hotels:")
             for i, hotel in enumerate(hotels, start=1):
@@ -84,33 +54,28 @@ def display_hotel(hotels):
         else:
             print("No hotels found.")
             return False
-    
-
-        #cursor = self.connection.cursor()
-        #cursor.execute('''INSERT INTO hotels (name, location, rating, price_per_night)
-                          #VALUES (?, ?, ?, ?)''', (name, location, rating, price_per_night))
-        
-        #self.connection.commit()
-        #return cursor.lastrowid
 
 
 def display():
     print("\nHotel Details:")
     print(f"Name: {hotel['name']}")
-    print(f"Price: ${hotel['price']}")
+    print(f"Price: {hotel['price_level']}")
     print(f"Rating: {hotel['rating']}")
-       
+    print(f"Address: {hotel['address']}")
+    print(f"Check-in Date: {hotel['check_in']}")
+    print(f"Check-out Date: {hotel['check_out']}")
+    print("Note: Additional availability details must be confirmed with the hotel.")
         
 if __name__ == "__main__":
     print(f'Welcome!')
-    price = float(input("Enter maximum price per night: "))
+    price = int(input("Enter maximum price level(Lowest Rating: 1, Highest Rating: 4): "))
     city = input("What city are you visting? ")
-    rating = float(input("What is the lowest hotel rating you would prefer? "))
-    check_in = input("What day are you checking in? (Year, Month, Day)").strip()
-    check_out = input("What day are you checking out? (Year, Month, Day)").strip()
-    hotel = get_hotels(city, rating, price)  
+    rating = float(input("What is the lowest hotel rating you would prefer? ex. 3.8: "))
+    check_in = input("What day are you checking in? (YYYY-MM-DD)").strip()
+    check_out = input("What day are you checking out? (YYYY-MM-DD)").strip()
+    hotel = get_hotels(city, rating,check_in, check_out, price)  
    
-    #database not used due to project expansion(pulling from website)
+    
     if display_hotel(hotel):
         try:
             # Ask user to select a hotel
@@ -122,9 +87,5 @@ if __name__ == "__main__":
                 print("Invalid selection.")
         except ValueError:
             print("Invalid input. Please enter a number.")
-
-    #things to do: 
-    #get api keys for using hotels.com
-    #clean up code
 
 

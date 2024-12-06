@@ -5,10 +5,11 @@
     A travel package planner.
 """
 import requests
-import travel_locations
-import flight_database
+import travel_locations 
+import flight_database 
+import hotel_databases
 
-class TravelPlanner:
+class Travel_Planner:
     """A class that generates a custom travel package based on user input.
 
     Attributes:
@@ -23,7 +24,6 @@ class TravelPlanner:
         self.flight_price_max = 0
         self.hotel_price_max = 0
         self.flight_results = ""
-        self.places_to_visit = []
     
     def get_user_input(self):
         
@@ -64,26 +64,9 @@ class TravelPlanner:
         pass
     
     def retreive_event_data(self):
-        """
-        Retrieves a list of places to visit in the destination country using a web scraper.
         
-        This method uses the `travel_locations.scrape_places_to_visit` function to fetch 
-        a list of popular places to visit in the specified destination country. The results 
-        are stored in the `places_to_visit` attribute of the class.
-        
-        Args:
-            None
-        
-        Returns:
-            None: The results are stored in the `places_to_visit` attribute.
-        
-        Raises:
-            Exception: If the web scraping process encounters issues, appropriate error 
-            messages will be printed.
-        """  
-
-        url = "https://www.travelandleisure.com/best-places-to-visit-in-south-america-7974457"
-        self.places_to_visit = travel_locations.scrape_places_to_visit(url, self.destination)
+        events = location_database()
+        events.search_activities()
     
     def create_travel_package(self):
         pass
@@ -103,11 +86,8 @@ class TravelPlanner:
     
 if __name__ == "__main__":
     
-    planner = TravelPlanner() 
+    planner = Travel_Planner() 
     
     planner.get_user_input() 
     
     planner.display_travel_package()
-    
-    
-
