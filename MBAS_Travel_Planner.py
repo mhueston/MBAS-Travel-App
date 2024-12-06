@@ -60,8 +60,10 @@ class Travel_Planner:
         
     
     def retreive_hotel_data(self):
-        pass
+        
+        hotel_data = hotel_databases.HotelDatabase.get_hotels(country_name = self.country_name)
     
+
     def retreive_weather_data(self):
         pass
     
