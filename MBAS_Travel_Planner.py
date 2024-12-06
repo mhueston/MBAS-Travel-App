@@ -26,15 +26,11 @@ class Travel_Planner:
         self.flight_price_max = 0
         self.hotel_price_max = 0
         self.flight_results = ""
-<<<<<<< Updated upstream
         self.country_name = ""
-=======
-        
->>>>>>> Stashed changes
     
     def get_user_input(self):
         
-        self.country_name = input("Enter the South American country you want to go to: ").strip
+        self.country_name = input("Enter the South American country you want to go to: ").strip()
         self.origin = input("Enter the origin airport code (e.g., JFK): ") 
         self.destination = input("Enter the destination airport code (e.g., LAX): ") 
         self.start_date = input("Enter the start date of the trip (YYYY-MM-DD): ") 
@@ -69,31 +65,50 @@ class Travel_Planner:
         pass
     
     def retreive_weather_data(self):
-            
-        try: 
-            # Parse the date and extract the month
-            year, month, day = self.start_date.split("-")
-            month_number = int(month)
-
-            # Convert month number to name
-            months = [
-                "January", "February", "March", "April", "May", "June",
-                "July", "August", "September", "October", "November", "December"
-            ]
-            if not 1 <= month_number <= 12:
-                raise ValueError("Invalid month number. Must be between 1 and 12.")
-            
-            month_name = months[month_number - 1]
-
-            # Retrieve weather information
-            seasons_checker = weather_database.SouthAmericaSeasons()
-            message = seasons_checker.get_season(country, month_name)
-            return message
-        except ValueError as e:
-            return str(e)
-        except Exception:
-            return "An error occurred while processing the weather data."
         
+        """
+        Retrieves the weather data for the specified country and start date.
+        
+        The month is extracted from the start date and used to fetch the seasonal weather information.
+        
+        Returns:
+            message (str): A message indicating the predominant weather for the specified country and month, or an error message.
+        """
+        
+        # Parse the date and extract the month
+        
+        year, month, day = self.start_date.split("-")
+        
+        month_number = int(month)
+
+        # Convert month number to name
+        
+        months = [
+            "January", 
+            "February", 
+            "March", 
+            "April", 
+            "May", 
+            "June",
+            "July", 
+            "August", 
+            "September", 
+            "October", 
+            "November", 
+            "December"
+        ]
+        
+        if not 1 <= month_number <= 12:
+            
+            return "Invalid month number. Must be between 1 and 12."
+        
+        month_name = months[month_number - 1]
+
+        # Retrieve weather information
+        
+        seasons_checker = weather_database.SouthAmericaSeasons()
+        
+        return seasons_checker.get_season(self.country_name, month_name)
     
     def retreive_event_data(self):
         
@@ -123,3 +138,6 @@ if __name__ == "__main__":
     planner.get_user_input() 
     
     planner.display_travel_package()
+    
+    # prints the date from the retrieve_weather_data function
+    print(planner.retreive_weather_data())
