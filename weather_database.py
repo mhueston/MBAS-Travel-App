@@ -1,16 +1,24 @@
+import MBAS_Travel_Planner
+
 class SouthAmericaSeasons:
     
     """
-    A class to determine seasonal weather conditions in South American countries 
-    based on user-specified country and month.
+    A class to determine seasonal weather conditions in South American countries based on user-specified country and month.
 
     Attributes:
         hot_season (dict): Maps countries to months with hot weather.
         rainy_season (dict): Maps countries to months with rainy weather.
         cold_season (dict): Maps countries to months with cold weather.
+
+    Methods:
+        get_season(country, month): Determines the predominant season for a given country and month.
     """
     
     def __init__(self):
+        
+        """
+        Initializes the SouthAmericaSeasons object, setting up the dictionaries for hot, rainy, and cold seasons for each South American country.
+        """
         
         self.hot_season = {
             'Brazil': ['December', 'February', 'March', 'May', 'September'],
@@ -61,11 +69,13 @@ class SouthAmericaSeasons:
         
         """
         Determines the predominant season for a given country and month.
+
         Args:
             country (str): The name of the country.
             month (str): The month of the year.
+
         Returns:
-            str: The season ("hot", "rainy", "cold", or "unknown") for the given country and month.
+            list[str]: A list of seasons (e.g., ["hot", "rainy"]) that may be predominant for the given country and month.
         """
         
         country = country.strip().capitalize()
@@ -93,13 +103,21 @@ class SouthAmericaSeasons:
         if country in self.cold_season and month in self.cold_season[country]:
             
             seasons.append("cold")
-
-        return seasons if seasons else ["unknown"]
+            
+        if seasons:
+            
+            return f"In {country} during {month}, the weather is {', '.join(seasons)}."
+        
+        else:
+            
+            return f"Season information for {country} in {month} is unknown."
 
 # how to test the code
-seasons_checker = SouthAmericaSeasons()
-country = "Brazil"
-month = "June"
-seasons = seasons_checker.get_season(country, month)
-print(f"In {country} during {month}, the weather is {', '.join(seasons)}.")
+"""seasons_checker = SouthAmericaSeasons()
+country = #need to get from the main
+pattern = r'^\d{4}-(\d{2})-\d{2}$'
+month = MBAS_Travel_Planner(pattern)
+message = seasons_checker.get_season(country, month)
+print(message)"""
+
     
