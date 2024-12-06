@@ -24,9 +24,11 @@ class Travel_Planner:
         self.flight_price_max = 0
         self.hotel_price_max = 0
         self.flight_results = ""
+        self.country_name = ""
     
     def get_user_input(self):
         
+        self.country_name = input("Enter the South American country you want to go to: ").strip
         self.origin = input("Enter the origin airport code (e.g., JFK): ") 
         self.destination = input("Enter the destination airport code (e.g., LAX): ") 
         self.start_date = input("Enter the start date of the trip (YYYY-MM-DD): ") 
@@ -65,8 +67,8 @@ class Travel_Planner:
     
     def retreive_event_data(self):
         
-        events = location_database()
-        events.search_activities()
+        events = travel_locations.PlaceScraper(url = "https://www.travelandleisure.com/best-places-to-visit-in-south-america-7974457")
+        events.places_by_country.get(self.country_name)
     
     def create_travel_package(self):
         pass
@@ -86,7 +88,7 @@ class Travel_Planner:
     
 if __name__ == "__main__":
     
-    planner = Travel_Planner() 
+    planner = Travel_Planner()  
     
     planner.get_user_input() 
     
