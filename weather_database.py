@@ -106,18 +106,10 @@ class SouthAmericaSeasons:
             
         if seasons:
             
-            return f"In {country} during {month}, the weather is {', '.join(seasons)}."
+            return f"In {country} during {month}, the weather is {', '.join(seasons)}.\n"
         
         else:
             
             return f"Season information for {country} in {month} is unknown."
-
-# how to test the code
-"""seasons_checker = SouthAmericaSeasons()
-country = #need to get from the main
-pattern = r'^\d{4}-(\d{2})-\d{2}$'
-month = MBAS_Travel_Planner(pattern)
-message = seasons_checker.get_season(country, month)
-print(message)"""
 
     

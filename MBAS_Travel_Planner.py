@@ -17,26 +17,75 @@ class Travel_Planner:
         user_input (dict): A dictionary to store user input data (origin, destination, start_date, end_date, flight price max, hotel price max)
     """
     
+    airport_codes = {
+            'Brazil': 'GRU', 
+            'Chile': 'SCL', 
+            'Argentina': 'EZE', 
+            'Bolivia': 'LPB',
+            'Colombia': 'BOG',
+            'Ecuador': 'UIO',
+            'Guyana': 'GEO',
+            'Peru': 'ASU',
+            'Paraguay': 'LIM',
+            'Suriname': 'PBM',
+            'Uruguay': 'MVD',
+            'Venezuela': 'CCS'}
+    
+    tourist_cities = {
+            'Brazil': ["Rio de Janeiro", "São Paulo", "Salvador", "Brasília", "Foz do Iguaçu"], 
+            'Chile': ["Santiago", "Valparaíso", "San Pedro de Atacama", "Punta Arenas", "Puerto Varas"], 
+            'Argentina': ["Buenos Aires", "Mendoza", "Bariloche", "Cordoba", "Salta"], 
+            'Bolivia': ["La Paz", "Sucre", "Uyuni", "Santa Cruz de la Sierra", "Copacabana"],
+            'Colombia': ["Bogotá", "Medellín", "Cartagena", "Cali", "Santa Marta"],
+            'Ecuador': ["Quito", "Guayaquil", "Cuenca", "Baños", "Puerto Ayora"],
+            'Guyana': ["Georgetown", "Bartica", "Lethem", "Linden", "Kaieteur National Park"],
+            'Peru': ["Lima", "Cusco", "Arequipa", "Puno", "Iquitos"],
+            'Paraguay': ["Asunción", "Ciudad del Este", "Encarnación", "San Bernardino", "Filadelfia"],
+            'Suriname': ["Paramaribo", "Brownsberg", "Nieuw Nickerie", "Albina", "Galibi Nature Reserve"],
+            'Uruguay': ["Montevideo", "Punta del Este", "Colonia del Sacramento", "Salto", "Rocha"],
+            'Venezuela': ["Caracas", "Mérida", "Isla Margarita", "Canaima", "Maracaibo"]}
+    
+    country_codes = {
+            'Argentina': 'ar', 
+            'Bolivia': 'bo', 
+            'Brazil': 'br', 
+            'Chile': 'cl', 
+            'Colombia': 'co', 
+            'Ecuador': 'ec', 
+            'Guyana': 'gy', 
+            'Paraguay': 'py', 
+            'Peru': 'pe', 
+            'Suriname': 'sr', 
+            'Uruguay': 'uy', 
+            'Venezuela': 've'
+    }
+    
     def __init__(self):
         self.origin = "" 
+        self.city = ""
         self.destination = ""
         self.start_date = ""
         self.end_date = ""
         self.flight_price_max = 0
         self.hotel_price_max = 0
         self.flight_results = ""
+        self.gl = ""
     
     def get_user_input(self):
         
-        self.country_name = input("Enter the South American country you want to go to: ").strip()
+        self.country_name = input("Enter the South American country you would like to go to: ").strip()
+        print(f'Here are the top 5 tourist cities in {self.country_name}')
+        print(f'{self.tourist_cities[self.country_name]}')
+        self.city = input("Enter the  city you would like to go to: ") 
         self.origin = input("Enter the origin airport code (e.g., JFK): ") 
-        self.destination = input("Enter the destination airport code (e.g., LAX): ") 
         self.start_date = input("Enter the start date of the trip (YYYY-MM-DD): ") 
         self.end_date = input("Enter the end date of the trip (YYYY-MM-DD): ") 
         self.flight_price_max = float(input("Enter the maximum flight price: ")) 
-        self.hotel_price_max = float(input("Enter the maximum hotel price per night: ")) 
-    
-    def retreive_flight_data(self, origin, destination, start_date, end_date, flight_price_max):
+        self.hotel_price_max = (input("Enter the maximum hotel price per night: ")) 
+        self.destination = self.airport_codes[self.country_name]
+        self.gl = self.country_codes[self.country_name]
+        
+    def retreive_flight_data(self):
         """ Take destiniation origin, date range, and flight price range to find a flight that fits the criteria. Driven by Madison
         
         Attributes:
@@ -51,16 +100,25 @@ class Travel_Planner:
         
         """
         
-        outbound_flight = flight_database.FlightDatabase(origin, destination, start_date)
-        inbound_flight = flight_database.FlightDatabase(origin, destination, start_date)
+        outbound_flight = flight_database.FlightDatabase(self.origin, self.destination, self.start_date)
+        inbound_flight = flight_database.FlightDatabase(self.destination, self.origin, self.end_date)
         
-        self.flight_results += outbound_flight.get_flight_results()
-        self.flight_results += "-----------------------------------"
-        self.flight_results += inbound_flight.get_flight_results()
+        outbound_results = outbound_flight.get_flight_results()
+        self.flight_results += f"Your flights to {self.country_name}:\n"
+        self.flight_results += "\n".join(outbound_results) + "\n"
+        inbound_results = inbound_flight.get_flight_results()
+        self.flight_results += "Your flights home:\n"
+        self.flight_results += "\n".join(inbound_results) + "\n"
+        
+        return
         
     
     def retreive_hotel_data(self):
-        pass
+        
+        hotel_data = hotel_databases.HotelDatabase(self.city, self.gl, self.start_date, self.end_date, self.hotel_price_max)
+        hotel = hotel_data.get_hotels()
+        return hotel_data.display(hotel)
+        
     
     def retreive_weather_data(self):
         
@@ -111,7 +169,8 @@ class Travel_Planner:
     def retreive_event_data(self):
         
         events = travel_locations.PlaceScraper(url = "https://www.travelandleisure.com/best-places-to-visit-in-south-america-7974457")
-        events.places_by_country.get(self.country_name)
+        events.scrape_places()
+        return events.get_places_for_country(self.country_name)
     
     def create_travel_package(self):
         pass
@@ -126,8 +185,21 @@ class Travel_Planner:
             travel_package_output (String): A string format of the travel package.
         
         """
-        print (f'Here is your flight information:\n{self.flight_results}')
-    
+        self.retreive_flight_data()
+        hotel_data = self.retreive_hotel_data()
+        
+        print("Thank you for choosing MBAS. Below is your custom travel package.\n")
+        print (f'\nHere is your flight information:\n{self.flight_results}')
+        print("-----------------------------------")
+        print(f'\nHere is your hotel information:\n{hotel_data}')
+        print("-----------------------------------")
+        print(f'\nHere is the weather in {self.country_name}:')
+        print(planner.retreive_weather_data())
+        print("-----------------------------------\n")
+        print(f'Here are places to visit in {self.country_name}:')
+        print(self.retreive_event_data())
+        print("-----------------------------------")
+        
     
 if __name__ == "__main__":
     
@@ -137,14 +209,6 @@ if __name__ == "__main__":
     
     planner.display_travel_package()
     
-    # prints the date from the retrieve_weather_data function
-    print(planner.retreive_weather_data())
-
-    planner.retreive_hotel_data()
-
-    planner.retreive_event_data()
-
-    planner.create_travel_package()
 
 
     

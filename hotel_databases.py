@@ -1,91 +1,73 @@
 import requests
 
-
-def get_hotels(city, rating, check_in, check_out, price): 
-        api_key = "5330664078a7d7f3e969ffaa48d3865c5ca16390f5e8441f4d4382c0b13a0866"
-        geocode_url = "https://maps.googleapis.com/maps/api/geocode/json"
-        geocode_params = {
-        "address": city,
-        "key": api_key
-    }
-        geocode_response = requests.get(geocode_url, params=geocode_params).json()
-
-        if geocode_response.get("status") == "OK":
-            location = geocode_response["results"][0]["geometry"]["location"]
-            lat, lng = location["lat"], location["lng"]
-        else:
-            print("Error: Unable to determine the coordinates of the specified city.")
-            return []
-
-        places_url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
-        places_params = {
-        "location": f"{lat},{lng}",
-        "radius": 50000,  # 50 km radius
-        "type": "lodging",
-        "key": api_key
-    }
-        response = requests.get(places_url, params = places_params)        
-        if response.status_code == 200:
-            hotels = response.json().get("results", [])
-            filter_hotels = [
-                {
-                    "Name": hotel["Name"],
-                    "Rating": hotel.get("Rating", "N/A"),
-                    "Price": hotel.get("Price_Level", "N/A"),
-                    "City": hotel.get("City", "N/A"),
-                    "Check-In": check_in,
-                    "Check-Out": check_out
-
-                }
-                for hotel in hotels if hotel.get("Rating", 0) >= rating
-            ]
-            return filter_hotels
-        else:
-            print(f"Error: Unable to get data (Status Code: {response.status_code})")
-            return []
-
-
-def display_hotel(hotels):
-        if hotels:
-            print("\nAvailable Hotels:")
-            for i, hotel in enumerate(hotels, start=1):
-                print(f"{i}. Name: {hotel['name']}, Price: {hotel['price']}, Rating: {hotel['rating']}")
-            return True
-        else:
-            print("No hotels found.")
-            return False
-
-
-def display():
-    print("\nHotel Details:")
-    print(f"Name: {hotel['name']}")
-    print(f"Price: {hotel['price_level']}")
-    print(f"Rating: {hotel['rating']}")
-    print(f"Address: {hotel['address']}")
-    print(f"Check-in Date: {hotel['check_in']}")
-    print(f"Check-out Date: {hotel['check_out']}")
-    print("Note: Additional availability details must be confirmed with the hotel.")
-        
-if __name__ == "__main__":
-    print(f'Welcome!')
-    price = int(input("Enter maximum price level(Lowest Rating: 1, Highest Rating: 4): "))
-    city = input("What city are you visting? ")
-    rating = float(input("What is the lowest hotel rating you would prefer? ex. 3.8: "))
-    check_in = input("What day are you checking in? (YYYY-MM-DD)").strip()
-    check_out = input("What day are you checking out? (YYYY-MM-DD)").strip()
-    hotel = get_hotels(city, rating,check_in, check_out, price)  
-   
+class HotelDatabase:
     
-    if display_hotel(hotel):
-        try:
-            # Ask user to select a hotel
-            hotel_choice = int(input("\nEnter the number of the hotel to view details: ").strip())
-            if 1 <= hotel_choice <= len(hotel):
-                selected_hotel = hotel[hotel_choice - 1]
-                display(selected_hotel)
+    def __init__(self, city, gl, check_in, check_out, price):
+        self.city = city
+        self.gl = gl
+        self.rating = 3.5
+        self.check_in = check_in
+        self.check_out = check_out
+        self.price = price
+        self.api_key = "5330664078a7d7f3e969ffaa48d3865c5ca16390f5e8441f4d4382c0b13a0866"
+
+    def get_hotels(self):
+        # Set the Google Hotels API endpoint
+        api_url = "https://serpapi.com/search?engine=google_hotels"
+
+        # Construct the parameters for the API request
+        params = {
+            "engine": "google_hotels",
+            "q": self.city,  # Search query: city name
+            "gl": self.gl,
+            "hl": "en",  # Language
+            "currency": "USD",  # Currency
+            "check_in_date": self.check_in,  # Check-in date
+            "check_out_date": self.check_out,  # Check-out date
+            "adults": 2,  # Number of adults
+            "children": 0,  # Number of children
+            "max_price": self.price,  # Maximum price filter
+            "api_key": self.api_key  # API key for SerpAPI
+        }
+
+        # Make the GET request to the API
+        response = requests.get(api_url, params=params)
+
+        if response.status_code == 200:
+            response_json = response.json()
+            hotels = response_json.get("properties", [])
+            
+            if hotels:
+                top_hotel = hotels[0]
+                return top_hotel
             else:
-                print("Invalid selection.")
-        except ValueError:
-            print("Invalid input. Please enter a number.")
+                return None
+        else:
+            print("Error fetching data from API.")
+            return None
 
-
+    def display(self, hotel):
+        results = ""
+    
+        # Always include the essential fields
+        if hotel:
+            results += (f"Name: {hotel['name']}\n")
+            results += (f"Price: {hotel['rate_per_night']['lowest']}\n")
+            results += (f"Rating: {hotel.get('rating', 'N/A')}\n")
+            results += (f"City: {self.city}\n")
+            results += (f"Check-in Date: {self.check_in}\n")
+            results += (f"Check-out Date: {self.check_out}\n")
+            
+            description = hotel.get('description')
+            if description:
+                results += (f"Description: {description}\n")
+            
+            link = hotel.get('link')
+            if link:
+                results += (f"Link: {link}\n")
+            
+            results += ("Note: Additional availability details must be confirmed with the hotel.\n")
+        else:
+            results += ("No hotel found.\n")
+        
+        return results

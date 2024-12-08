@@ -50,15 +50,21 @@ class FlightDatabase:
         data = response.json()
         
         flights_data = data.get('best_flights', [])
-        formatted_flights = []
         
-        for flight in flights_data:
-            for segment in flight['flights']:
-                departure_info = f"Flight departs from {segment['departure_airport']['name']} at {segment['departure_airport']['time']}."
-                arrival_info = f"Flight arrives at {segment['arrival_airport']['name']} at {segment['arrival_airport']['time']}."
-                extras = ', '.join(segment.get('extensions', []))
-                flight_info = f"{departure_info} {arrival_info}\nThere is {extras}."
-                
-                formatted_flights.append(flight_info)
-        
-        return formatted_flights
+        if not flights_data:
+            print("No flights found.")
+            return []
+
+        flight = flights_data[0]
+        formatted_flight = []
+        flight_number = 1
+
+        for segment in flight['flights']:
+            departure_info = f"Flight {flight_number} departs from {segment['departure_airport']['name']} at {segment['departure_airport']['time']}."
+            arrival_info = f"Flight arrives at {segment['arrival_airport']['name']} at {segment['arrival_airport']['time']}."
+            extras = ', '.join(segment.get('extensions', []))
+            flight_info = f"{departure_info}\n{arrival_info}\nThere is {extras}\n "
+            flight_number += 1
+            formatted_flight.append(flight_info)
+
+        return ["\n".join(formatted_flight)]

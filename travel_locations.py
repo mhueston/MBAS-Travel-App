@@ -50,4 +50,17 @@ class PlaceScraper:
         Returns:
             A list of places to visit in the specified country.
         """
-        return self.places_by_country.get(country_name, [])
+        
+        if country_name in self.places_by_country:
+            results = self.places_by_country[country_name]
+            formatted_results = "\n"
+            
+            for i in range(len(results)):
+                formatted_results += f'{i+1}. {results[i]}\n'
+        
+            return formatted_results
+            
+            return self.places_by_country[country_name]
+        else:
+            return f'There are limited tourist places in {country_name}'
+
