@@ -33,17 +33,14 @@ class TestTravelPlanner(unittest.TestCase):
         mock_inbound.get_flight_results.return_value = ["Flight C", "Flight D"]
         mock_flight_db.side_effect = [mock_outbound, mock_inbound]
 
-        # Set necessary attributes for the method
         self.planner.origin = "JFK"
         self.planner.destination = "GRU"
         self.planner.start_date = "2024-12-15"
         self.planner.end_date = "2024-12-22"
-        self.planner.country_name = "Brazil"  # This attribute was missing
+        self.planner.country_name = "Brazil" 
 
-        # Call the method under test
         self.planner.retreive_flight_data()
 
-        # Assert the expected results
         self.assertIn("Your flights to Brazil:", self.planner.flight_results)
         self.assertIn("Flight A", self.planner.flight_results)
         self.assertIn("Flight D", self.planner.flight_results)
