@@ -20,10 +20,13 @@ class FlightDatabase:
             outbound_date (str): The date of departure in 'YYYY-MM-DD' format.
         """
         self.departure_id = departure_id
+        
         self.arrival_id = arrival_id
+        
         self.outbound_date = outbound_date
 
     def get_flight_results(self):
+        
         """
         Queries the SerpAPI for flight data based on the initialized parameters.
 
@@ -44,7 +47,9 @@ class FlightDatabase:
         response = requests.get(api_endpoint, params=params)
         
         if response.status_code != 200: 
+            
             print(f"Error fetching flight data. Status code: {response.status_code}") 
+            
             return []
 
         data = response.json()
@@ -52,19 +57,29 @@ class FlightDatabase:
         flights_data = data.get('best_flights', [])
         
         if not flights_data:
+            
             print("No flights found.")
+            
             return []
 
         flight = flights_data[0]
+        
         formatted_flight = []
+        
         flight_number = 1
 
         for segment in flight['flights']:
+            
             departure_info = f"Flight {flight_number} departs from {segment['departure_airport']['name']} at {segment['departure_airport']['time']}."
+            
             arrival_info = f"Flight arrives at {segment['arrival_airport']['name']} at {segment['arrival_airport']['time']}."
+            
             extras = ', '.join(segment.get('extensions', []))
+            
             flight_info = f"{departure_info}\n{arrival_info}\nThere is {extras}\n "
+            
             flight_number += 1
+            
             formatted_flight.append(flight_info)
 
         return ["\n".join(formatted_flight)]
