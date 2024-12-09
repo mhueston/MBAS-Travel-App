@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBAS Travel Planner</title>
+    <style>
+        /**
+         * The CSS styles applied to the page elements.
+         */
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MBAS Travel Planner</h1>
+    </header>
+    <main>
+        <h2>Create Your Custom Travel Package</h2>
+        <form id="travelForm">
+            <!-- Form for user input to create a travel package -->
+            <label for="country">Select Country:</label>
+            <select id="country" name="country" required>
+                <option value="">--Select--</option>
+                <!-- Add all South American countries as options -->
+                <option value="Brazil">Brazil</option>
+                <option value="Chile">Chile</option>
+                <option value="Argentina">Argentina</option>
+                <option value="Bolivia">Bolivia</option>
+                <option value="Colombia">Colombia</option>
+                <option value="Ecuador">Ecuador</option>
+                <option value="Guyana">Guyana</option>
+                <option value="Paraguay">Paraguay</option>
+                <option value="Peru">Peru</option>
+                <option value="Suriname">Suriname</option>
+                <option value="Uruguay">Uruguay</option>
+                <option value="Venezuela">Venezuela</option>
+            </select>
+            <label for="city">Select City:</label>
+            <select id="city" name="city" required>
+                <option value="">--Select a country first--</option>
+            </select>
+            <label for="origin">Origin Airport Code:</label>
+            <input type="text" id="origin" name="origin" required>
+            <label for="start_date">Start Date (YYYY-MM-DD):</label>
+            <input type="date" id="start_date" name="start_date" required>
+            <label for="end_date">End Date (YYYY-MM-DD):</label>
+            <input type="date" id="end_date" name="end_date" required>
+            <label for="flight_price_max">Max Flight Price:</label>
+            <input type="number" id="flight_price_max" name="flight_price_max" required>
+            <label for="hotel_price_max">Max Hotel Price Per Night:</label>
+            <input type="number" id="hotel_price_max" name="hotel_price_max" required>
+            <button type="submit">Get Package</button>
+        </form>
+    </main>
+    <script>
+        /**
+         * JavaScript code for handling dynamic form interactions and sending the request to the server.
+         * 
+         * countryCities: A dictionary mapping country names to a list of cities in that country.
+         * 
+         * The event listeners are added to:
+         * - The "country" dropdown to dynamically update the "city" dropdown based on the selected country.
+         * - The form submission to collect input data and send it to the server for package creation.
+         * 
+         * The fetch request sends the user inputs as JSON to the '/create_package' endpoint.
+         * Once the response is received, the user is redirected to the '/package' page with the package data.
+         */
+        
+        const countryCities = {
+            "Brazil": ["Rio de Janeiro", "São Paulo", "Salvador", "Brasília", "Foz do Iguaçu"],
+            "Chile": ["Santiago", "Valparaíso", "San Pedro de Atacama", "Punta Arenas", "Puerto Varas"],
+            "Argentina": ["Buenos Aires", "Mendoza", "Bariloche", "Cordoba", "Salta"],
+            "Bolivia": ["La Paz", "Sucre", "Uyuni", "Santa Cruz de la Sierra", "Copacabana"],
+            "Colombia": ["Bogotá", "Medellín", "Cartagena", "Cali", "Santa Marta"],
+            "Ecuador": ["Quito", "Guayaquil", "Cuenca", "Baños", "Puerto Ayora"],
+            "Guyana": ["Georgetown", "Bartica", "Lethem", "Linden", "Kaieteur National Park"],
+            "Peru": ["Lima", "Cusco", "Arequipa", "Puno", "Iquitos"],
+            "Paraguay": ["Asunción", "Ciudad del Este", "Encarnación", "San Bernardino", "Filadelfia"],
+            "Suriname": ["Paramaribo", "Brownsberg", "Nieuw Nickerie", "Albina", "Galibi Nature Reserve"],
+            "Uruguay": ["Montevideo", "Punta del Este", "Colonia del Sacramento", "Salto", "Rocha"],
+            "Venezuela": ["Caracas", "Mérida", "Isla Margarita", "Canaima", "Maracaibo"]
+        };
+
+        document.getElementById('country').addEventListener('change', function () {
+            const citiesDropdown = document.getElementById('city');
+            const selectedCountry = this.value;
+
+            // Clear current options
+            citiesDropdown.innerHTML = '<option value="">--Select--</option>';
+
+            if (countryCities[selectedCountry]) {
+                countryCities[selectedCountry].forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city;
+                    option.textContent = city;
+                    citiesDropdown.appendChild(option);
+                });
+            }
+        });
+
+        document.getElementById('travelForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = {
+                country: document.getElementById('country').value,
+                city: document.getElementById('city').value,
+                origin: document.getElementById('origin').value,
+                start_date: document.getElementById('start_date').value,
+                end_date: document.getElementById('end_date').value,
+                flight_price_max: document.getElementById('flight_price_max').value,
+                hotel_price_max: document.getElementById('hotel_price_max').value
+            };
+
+            const response = await fetch('/create_package', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+            window.location.href = `/package?data=${encodeURIComponent(JSON.stringify(data))}`;
+        });
+    </script>
+</body>
+</html>

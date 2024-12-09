@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Package</title>
+    <style>
+        /* Style for the body, header, and main content */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #0096c7, #023e8a);
+            color: #fff;
+            text-align: center;
+        }
+        header {
+            background: #0077b6;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        header h1 {
+            margin: 0;
+        }
+        main {
+            margin: 0 auto;
+            padding: 20px;
+            max-width: 800px;
+            background: #fff;
+            color: #333;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        pre {
+            text-align: left;
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        #back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #023e8a;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #back-button:hover {
+            background-color: #0077b6;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MBAS Travel Package</h1>
+    </header>
+    <main>
+        <h2>Your Travel Package</h2>
+        <div id="package-details"></div>
+        <!-- Button to go back to the previous page -->
+        <button id="back-button">Back</button>
+    </main>
+    <script>
+        // Retrieve package data from the URL query string and display the details
+        const params = new URLSearchParams(window.location.search); // Get query parameters from the URL
+        const data = JSON.parse(params.get('data')); // Parse the JSON data
+
+        // Format and display the package details dynamically
+        const packageDetails = `
+            <h3>Country: ${data.country}</h3>
+            <h4>Flight Information:</h4>
+            <pre>${data.flight_info}</pre>
+            <h4>Hotel Information:</h4>
+            <pre>${data.hotel_info}</pre>
+            <h4>Weather Information:</h4>
+            <pre>${data.weather_info}</pre>
+            <h4>Events / Historical Locations:</h4>
+            <pre>${data.events}</pre>
+        `;
+
+        // Inject the formatted package details into the page
+        document.getElementById('package-details').innerHTML = packageDetails;
+
+        // Add functionality to the back button to go back to the previous page
+        document.getElementById('back-button').addEventListener('click', () => {
+            window.history.back(); // Navigate to the previous page in history
+        });
+    </script>
+</body>
+</html>
