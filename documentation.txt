@@ -1,0 +1,11 @@
+1. One to four sentences explaining what your project is and what it does.
+
+
+2. An explanation on how to run the program from the command line.
+
+
+3. Documentation on how to use the program / how to interpret the output of the program.
+
+
+4. An annotated bibliography of all sources you used to develop the program and how you used them.
+

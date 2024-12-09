@@ -108,6 +108,10 @@ class SouthAmericaSeasons:
         
         else:
             
+<<<<<<< Updated upstream
             return f"Season information for {country} in {month} is unknown."
 
     
+=======
+            return f"Season information for {country} in {month} is unknown."    
+>>>>>>> Stashed changes
