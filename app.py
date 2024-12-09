@@ -1,11 +1,19 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask
+
+from flask import render_template
+
+from flask import request
+
+from flask import jsonify
 
 from MBAS_Travel_Planner import Travel_Planner
 
 app = Flask(__name__)
 
 @app.route('/')
+
 def index():
+    
     """
     Renders the index page of the application.
     
@@ -18,7 +26,9 @@ def index():
     return render_template('index.html')
 
 @app.route('/create_package', methods=['POST'])
+
 def create_package():
+    
     """
     Creates a travel package based on user input and returns related details.
 
@@ -37,34 +47,55 @@ def create_package():
                         country, flight information, hotel information, weather information,
                         and event information.
     """
+    
     data = request.json
+    
     planner = Travel_Planner()
+    
     planner.country_name = data['country']
+    
     planner.city = data['city']
+    
     planner.origin = data['origin']
+    
     planner.start_date = data['start_date']
+    
     planner.end_date = data['end_date']
+    
     planner.flight_price_max = float(data['flight_price_max'])
+    
     planner.hotel_price_max = float(data['hotel_price_max'])
+    
     planner.destination = planner.airport_codes[planner.country_name]
+    
     planner.gl = planner.country_codes[planner.country_name]
 
     planner.retreive_flight_data()
+    
     hotel_data = planner.retreive_hotel_data()
+    
     weather_data = planner.retreive_weather_data()
+    
     events = planner.retreive_event_data()
     
     response = {
         "country": planner.country_name,
+        
         "flight_info": planner.flight_results,
+        
         "hotel_info": hotel_data,
+        
         "weather_info": weather_data,
+        
         "events": events
     }
+    
     return jsonify(response)
 
 @app.route('/package')
+
 def package():
+    
     """
     Renders the travel package details page.
 
