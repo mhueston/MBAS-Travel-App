@@ -1,0 +1,155 @@
+MBAS Travel Planner Final Project Documentation
+
+Madison Hueston
+Areana Holder
+Samgwaa Lesiga
+Brooke Davis
+
+Project Explanation
+
+	The MBAS Travel Planner is a program that generates a custom travel package to any South American country for the user 
+    based on their input. Their input includes their country of choice, their city of choice, when they would like to leave 
+    for the trip, when they would like to return from the trip, their max flight price and their max hotel price.  The package 
+    includes their outbound and inbound flight information, which can include 1 or more flights, their hotel information, the weather 
+    in their country of choice during their stay, and popular events/places to visit in their country of choice.
+
+
+How to run the program:
+
+	1. There are 2 ways to run the MBAS Travel Planner program. The first way is within a code editor, such as VS Code. In the terminal input:
+
+    python3 MBAS_Travel_Planner.py
+
+    If running the program on VS code the user would need to install the bs4 module if not already downloaded using the command in their terminal: 
+
+    pip install bs4
+
+
+    2. The second way to run the program is through the flask webpage we created. To run the webpage you will need to have flask installed. Use this command in the terminal to do this: 
+
+    pip install flask
+
+    In the terminal, input:
+
+    python3 app.py
+
+    This will make the webpage active. In the terminal, it will provide a link to navigate to the webpage. Put that link in your browser and load the MBAS Travel Package webpage.
+
+
+How to use/interpret the program:
+	
+	After running the program from the terminal it will ask for input for the country, city, start date, end date, max flight price, and max hotel price. Input these values and the program will output your custom travel package. 
+    For example, if this is what your input looks like:
+
+    Enter the South American country you would like to go to: Brazil
+    Here are the top 5 tourist cities in Brazil
+    ['Rio de Janeiro', 'São Paulo', 'Salvador', 'Brasília', 'Foz do Iguaçu']
+    Enter the  city you would like to go to: Salvador
+    Enter the origin airport code (e.g., JFK): BWI
+    Enter the start date of the trip (YYYY-MM-DD): 2025-01-01
+    Enter the end date of the trip (YYYY-MM-DD): 2025-01-10
+    Enter the maximum flight price: 2000
+    Enter the maximum hotel price per night: 500
+
+    Then the output should look like this:
+
+    Thank you for choosing MBAS. Below is your custom travel package.
+
+    Here is your flight information:
+    Your flights to Brazil:
+    Flight 1 departs from Baltimore/Washington International Thurgood Marshall Airport at 2025-01-01 15:27.
+    Flight arrives at Tocumen International Airport Panama at 2025-01-01 20:40.
+    There is Average legroom (31 in), In-seat USB outlet, Carbon emissions estimate: 284 kg
+ 
+    Flight 2 departs from Tocumen International Airport Panama at 2025-01-02 12:04.
+    Flight arrives at São Paulo/Guarulhos–Governor André Franco Montoro International Airport at 2025-01-02 20:50.
+    There is Average legroom (30 in), In-seat USB outlet, Stream media to your device, Carbon emissions estimate: 349 kg
+ 
+    Your flights home:
+    Flight 1 departs from São Paulo/Guarulhos–Governor André Franco Montoro International Airport at 2025-01-10 00:30.
+    Flight arrives at Miami International Airport at 2025-01-10 06:55.
+    There is Average legroom (31 in), Wi-Fi for a fee, In-seat power & USB outlets, On-demand video, Carbon emissions estimate: 530 kg
+ 
+    Flight 2 departs from Miami International Airport at 2025-01-10 08:57.
+    Flight arrives at Charlotte Douglas International Airport at 2025-01-10 11:18.
+    There is Average legroom (31 in), Wi-Fi for a fee, In-seat power & USB outlets, On-demand video, Carbon emissions estimate: 117 kg
+ 
+    Flight 3 departs from Charlotte Douglas International Airport at 2025-01-10 23:00.
+    Flight arrives at Baltimore/Washington International Thurgood Marshall Airport at 2025-01-11 00:18.
+    There is Average legroom (30 in), Wi-Fi for a fee, In-seat power outlet, Stream media to your device, Carbon emissions estimate: 89 kg
+ 
+
+    -----------------------------------
+
+    Here is your hotel information:
+    Name: Zank by Toque Hotel
+    Price: $233
+    Rating: N/A
+    City: Salvador
+    Check-in Date: 2025-01-01
+    Check-out Date: 2025-01-10
+    Description: Polished rooms with sea views, plus a restaurant, an outdoor pool, a spa & free breakfast.
+    Link: http://www.zankhotel.com.br/
+    Note: Additional availability details must be confirmed with the hotel.
+
+    -----------------------------------
+
+    Here is the weather in Brazil:
+    In Brazil during January, the weather is rainy.
+
+    -----------------------------------
+
+    Here are places to visit in Brazil:
+
+    1. Pantanal Wetland
+    2. Petrópolis
+    3. Christ the Redeemer
+    4. Sugarloaf Mountain
+
+    -----------------------------------
+
+
+After loading the MBAS Travel Planner webpage from your browser, input the information in the designated spots. 
+Click the “Get Package” button to generate the custom travel package. It will load a new screen with the custom travel package information.
+
+
+Source Bibliography:
+
+AccuWeather. (n.d.). Global Current Weather | AccuWeather. Retrieved from https://www.accuweather.com/en/south-america-weather
+Used to pull weather information for South American countries, providing users with real-time weather during their stay based on their input.
+
+Beautiful Soup Documentation. (n.d.). Crummy. Retrieved from https://www.crummy.com/software/BeautifulSoup/bs4/doc/
+Consulted the documentation for implementing the Beautiful Soup library for web scraping and parsing HTML to gather travel-related data.
+
+General ESRI, Climate Data, & Smart, E. (2007). The climate regions of South America. Retrieved from https://cenv.wwu.edu/files/2021-01/smart_a.pdf
+Used as a reference for understanding the different climate regions of South America, aiding in providing weather details in the travel package.
+
+Gade, D. W., Ramos, V. A., Minkel, C., Knapp, G. W., Griffin, E. C., Germani, G., Dorst, J. P., & Avila, H. F. (2024, December 5). South America | Facts, Land, People, & Economy. Encyclopedia Britannica. Retrieved from https://www.britannica.com/place/South-America/Factors-influencing-climate
+Provided general information about South American geography and climate, supporting the development of weather-related recommendations in the travel package.
+
+How to Make a Web Application Using Flask in Python 3 | DigitalOcean. (n.d.). Retrieved from https://www.digitalocean.com/community/tutorials/how-to-make-a-web-application-using-flask-in-python-3
+Used to guide the creation of the web application backend using Flask, which is a key component of the MBAS Travel Planner.
+
+Patel, J. M. (2020). Web scraping in Python using Beautiful Soup Library. In Apress eBooks (pp. 31–84). https://doi.org/10.1007/978-1-4842-6576-5_2
+Used to learn techniques for web scraping and processing data from websites such as flight and hotel information, integrated into the program.
+
+Pierce, H. (2024a, October 19). The best times to visit Argentina — from buzzy Buenos Aires to rugged Patagonia. Travel + Leisure. Retrieved from https://www.travelandleisure.com/best-time-to-visit-argentina-7814434#:~:text=Best%20Times%20to%20Visit%20Argentina%20for%20Good%20Weather&text=Avoid%20peak%20winter%20(August)%20and,of%20sunshine%20and%20warm%20days
+Provided details on the best times to visit Argentina, helping determine the optimal travel periods for users selecting Argentina as their destination.
+
+Pierce, H. (2024b, July 18). 25 best places to visit in South America, from the wetlands of Brazil to Easter Island. Travel + Leisure. Retrieved from https://www.travelandleisure.com/best-places-to-visit-in-south-america-7974457
+Offered recommendations for popular South American destinations, aiding the inclusion of travel suggestions in the program based on user preferences.
+
+SerpApi. (n.d.-a). Google Flights API - SerpAPI. Retrieved from https://serpapi.com/google-flights-api
+Integrated the Google Flights API to retrieve flight information and pricing, which was used to generate flight details for the travel package.
+
+SerpApi. (n.d.). Google Hotels API - SerpApi. Retrieved from https://serpapi.com/google-hotels-api
+Integrated the Google Hotels API to fetch hotel details, such as availability and pricing, which were incorporated into the custom travel package based on user input.
+
+Weather and climate for making your Bolivia travel plans. (n.d.). Retrieved from https://www.adventure-life.com/bolivia/articles/bolivia-weather#:~:text=Generally%20speaking%2C%20Bolivia%20has%20two,sees%20its%20share%20of%20downpours
+Provided specific weather and climate details for Bolivia, assisting with weather recommendations in the travel package for users selecting Bolivia.
+
+Wikipedia Contributors. (2024, November 26). Climate of Chile. Wikipedia. Retrieved from https://en.wikipedia.org/wiki/Climate_of_Chile#:~:text=There%20are%20four%20seasons%20in,spring%20(September%20to%20November)
+Offered climate information for Chile, assisting in providing accurate weather forecasts based on user inputs for trips to Chile.
+
+Best Time to Visit South America | The South America SpecialistsTM. (n.d.). The South America SpecialistsTM. Retrieved from https://www.thesouthamericaspecialists.com/when-to-go
+Provided insights into the best times to visit South American countries, which helped tailor trip recommendations based on user preferences.
