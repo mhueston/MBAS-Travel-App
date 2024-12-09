@@ -1,5 +1,3 @@
-import MBAS_Travel_Planner
-
 class SouthAmericaSeasons:
     
     """
