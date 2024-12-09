@@ -32,7 +32,7 @@ class HotelDatabase:
 
         # Make the GET request to the API
         response = requests.get(api_url, params=params)
-
+        
         if response.status_code == 200:
             response_json = response.json()
             hotels = response_json.get("properties", [])
