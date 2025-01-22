@@ -40,7 +40,7 @@ class FlightDatabase:
             "departure_id": self.departure_id,
             "arrival_id": self.arrival_id,
             "outbound_date": self.outbound_date,
-            "api_key": '323920de37a645c0b46ed65aa8287b7141d154e42f03944ec84ff05489fc6115',
+            "api_key": '-',
             "type": "2"
         }
 
